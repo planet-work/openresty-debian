@@ -1,0 +1,74 @@
+#!/usr/bin/make -f
+# See debhelper(7) (uncomment to enable)
+# output every command that modifies files on the build system.
+DH_VERBOSE=1
+
+# see EXAMPLES in dpkg-buildflags(1) and read /usr/share/dpkg/*
+DPKG_EXPORT_BUILDFLAGS = 1
+OPENSSL_VERSION=1.0.2f
+BUILD_DIR=$(CURDIR)/debian/tmp/
+
+include /usr/share/dpkg/default.mk
+
+# main packaging script based on dh7 syntax
+%:
+	dh $@ --parallel
+
+override_dh_auto_configure:
+	wget https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
+	tar vxf openssl-${OPENSSL_VERSION}.tar.gz
+	./configure --with-http_ssl_module \
+            --with-luajit \
+            --prefix=/usr/share/nginx/ \
+            --conf-path=/etc/nginx/nginx.conf \
+            --http-log-path=/var/log/nginx/access.log \
+            --error-log-path=/var/log/nginx/error.log \
+            --lock-path=/var/lock/nginx.lock \
+            --pid-path=/run/nginx.pid \
+            --http-client-body-temp-path=/var/lib/nginx/body \
+            --http-fastcgi-temp-path=/var/lib/nginx/fastcgi \
+            --http-proxy-temp-path=/var/lib/nginx/proxy \
+            --http-scgi-temp-path=/var/lib/nginx/scgi \
+            --http-uwsgi-temp-path=/var/lib/nginx/uwsgi \
+            --with-debug \
+            --with-pcre-jit \
+            --with-ipv6 \
+            --with-http_ssl_module \
+            --with-http_stub_status_module \
+            --with-http_realip_module \
+            --with-http_auth_request_module \
+            --with-http_addition_module \
+            --with-http_dav_module \
+            --with-http_flv_module \
+            --with-http_geoip_module \
+            --with-http_gunzip_module \
+            --with-http_gzip_static_module \
+            --with-http_image_filter_module \
+            --with-http_mp4_module \
+            --with-http_random_index_module \
+            --with-http_secure_link_module \
+            --with-http_sub_module \
+            --with-http_xslt_module \
+            --with-mail \
+            --with-mail_ssl_module \
+            --with-stream \
+            --with-stream_ssl_module \
+            --with-threads \
+            --without-http_ssi_module \
+            --without-http_userid_module \
+            --without-http_uwsgi_module \
+			--add-module=$(CURDIR)/debian/nginx-modules/ngx_cache_purge \
+            --with-openssl=$(CURDIR)/openssl-${OPENSSL_VERSION}
+
+override_dh_auto_install:
+	make install DESTDIR=${BUILD_DIR}
+	mkdir -p $(CURDIR)/debian/nginx-openresty/usr/sbin 
+	mkdir -p $(CURDIR)/debian/nginx-openresty/usr/share/nginx/
+	mkdir -p $(CURDIR)/debian/nginx-openresty/usr/share/man/man8/
+	cp $(CURDIR)/build/nginx-1.9.7/docs/man/nginx.8 $(CURDIR)/debian/nginx-openresty/usr/share/man/man8/
+	gzip -9 $(CURDIR)/debian/nginx-openresty/usr/share/man/man8/nginx.8
+	cp ${BUILD_DIR}/usr/share/nginx/nginx/sbin/nginx $(CURDIR)/debian/nginx-openresty/usr/sbin
+	cp -r ${BUILD_DIR}/usr/share/nginx/* $(CURDIR)/debian/nginx-openresty/usr/share/nginx/
+
+override_dh_auto_clean:
+	rm -fr openssl-${OPENSSL_VERSION}.tar.gz openssl-${OPENSSL_VERSION}/ $(CURDIR)/build $(CURDIR)/Makefile

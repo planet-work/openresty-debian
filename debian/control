@@ -1,0 +1,38 @@
+Source: openresty
+Section: httpd
+Priority: optional
+Maintainer: Frédéric VANNIÈRE <f.vanniere@planet-work.com>
+Build-Depends: debhelper (>= 9),
+ dpkg-dev
+Standards-Version: 3.9.6
+Homepage: https://openresty.org/
+Vcs-Git: git://github.com/planet-work/openresty-debian.git
+Vcs-Browser: https://github.com/planet-work/openresty-debian
+
+Package: nginx-openresty
+Architecture: any
+Provides: nginx-extras
+Replaces: nginx-extras
+Conflicts: nginx-extras
+Depends: nginx-common, ${shlibs:Depends}, ${misc:Depends}
+Description: nginx web/proxy server (Openresty version)
+ Nginx ("engine X") is a high-performance web and reverse proxy server
+ created by Igor Sysoev. It can be used both as a standalone web server
+ and as a proxy to reduce the load on back-end HTTP or mail servers.
+ .
+ This package provides a version of nginx with the complete set of
+ standard modules and Openresty modules.
+ .
+ STANDARD HTTP MODULES: Core, Access, Auth Basic, Auto Index, Browser, Empty
+ GIF, FastCGI, Geo, Limit Connections, Limit Requests, Map, Memcached, Proxy,
+ Referer, Rewrite, SCGI, Split Clients, UWSGI.
+ .
+ OPTIONAL HTTP MODULES: Addition, Auth Request, Charset, WebDAV, GeoIP, Gunzip,
+ Gzip, Gzip Precompression, Headers, HTTP/2, Image Filter, Index, Log, Real IP,
+ SSI, SSL, Stream, Stub Status, Substitution, Thread Pool, Upstream, User ID,
+ XSLT.
+ .
+ MAIL MODULES: Mail Core, Auth HTTP, Proxy, SSL, IMAP, POP3, SMTP.
+ .
+ THIRD PARTY MODULES: Auth PAM, DAV Ext, Echo, HTTP Substitutions, Upstream
+ Fair Queue.

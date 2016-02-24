@@ -1,0 +1,5 @@
+openresty (1.9.3.7-1) unstable; urgency=medium
+
+  * Initial version
+
+ -- Frédéric VANNIÈRE <f.vanniere@planet-work.com>  Tue, 23 Feb 2016 14:11:02 +0100
