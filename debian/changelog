@@ -1,3 +1,9 @@
+openresty (1.9.11.1rc0-1) UNRELEASED; urgency=medium
+
+  * New upstream test version 
+
+ -- Frédéric VANNIÈRE <f.vanniere@planet-work.com>  Thu, 25 Feb 2016 11:47:14 +0100
+
 openresty (1.9.3.7-1) unstable; urgency=medium
 
   * Initial version
