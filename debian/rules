@@ -56,8 +56,7 @@ override_dh_auto_configure:
             --with-threads \
             --without-http_ssi_module \
             --without-http_userid_module \
-            --without-http_uwsgi_module \
-			--add-module=$(CURDIR)/debian/nginx-modules/ngx_cache_purge \
+            --add-module=$(CURDIR)/debian/nginx-modules/ngx_cache_purge \
             --with-openssl=$(CURDIR)/openssl-${OPENSSL_VERSION}
 
 override_dh_auto_install:
