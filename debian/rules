@@ -6,6 +6,7 @@ DH_VERBOSE=1
 # see EXAMPLES in dpkg-buildflags(1) and read /usr/share/dpkg/*
 DPKG_EXPORT_BUILDFLAGS = 1
 OPENSSL_VERSION=1.0.2h
+NGINX_VERSION=1.11.2
 BUILD_DIR=$(CURDIR)/debian/tmp/
 
 include /usr/share/dpkg/default.mk
@@ -64,7 +65,7 @@ override_dh_auto_install:
 	mkdir -p $(CURDIR)/debian/nginx-openresty/usr/sbin 
 	mkdir -p $(CURDIR)/debian/nginx-openresty/usr/share/nginx/
 	mkdir -p $(CURDIR)/debian/nginx-openresty/usr/share/man/man8/
-	cp $(CURDIR)/build/nginx-1.9.7/docs/man/nginx.8 $(CURDIR)/debian/nginx-openresty/usr/share/man/man8/
+	cp $(CURDIR)/build/nginx-$(NGINX_VERSION)/docs/man/nginx.8 $(CURDIR)/debian/nginx-openresty/usr/share/man/man8/
 	gzip -9 $(CURDIR)/debian/nginx-openresty/usr/share/man/man8/nginx.8
 	cp ${BUILD_DIR}/usr/share/nginx/nginx/sbin/nginx $(CURDIR)/debian/nginx-openresty/usr/sbin
 	cp -r ${BUILD_DIR}/usr/share/nginx/* $(CURDIR)/debian/nginx-openresty/usr/share/nginx/
