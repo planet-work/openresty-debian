@@ -2,8 +2,8 @@ Source: openresty
 Section: httpd
 Priority: optional
 Maintainer: Frédéric VANNIÈRE <f.vanniere@planet-work.com>
-Build-Depends: debhelper (>= 9),
- dpkg-dev
+Build-Depends: debhelper (>= 9), zlib1g-dev, libxslt1-dev, libxslt1-dev, libpcre3-dev, 
+ libgd2-xpm-dev, dpkg-dev
 Standards-Version: 3.9.6
 Homepage: https://openresty.org/
 Vcs-Git: git://github.com/planet-work/openresty-debian.git
