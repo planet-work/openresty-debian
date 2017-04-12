@@ -1,3 +1,10 @@
+openresty (1.11.2.3-rc1) UNRELEASED; urgency=medium
+
+  * new upstream version
+  * OpenSSL 1.0.2k
+
+ -- Frédéric VANNIÈRE <f.vanniere@planet-work.com>  Wed, 12 Apr 2017 09:25:01 +0200
+
 openresty (1.11.2.1-2) stable; urgency=medium
 
   * new upstream version 
