@@ -5,7 +5,7 @@ DH_VERBOSE=1
 
 # see EXAMPLES in dpkg-buildflags(1) and read /usr/share/dpkg/*
 DPKG_EXPORT_BUILDFLAGS = 1
-OPENSSL_VERSION=1.0.2k
+OPENSSL_VERSION=1.0.2l
 NGINX_VERSION=1.11.2
 BUILD_DIR=$(CURDIR)/debian/tmp/
 

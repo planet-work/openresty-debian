@@ -1,0 +1,74 @@
+pipeline:
+
+  pkg-suffix:
+    image: dock.pw.fr/pw/debpkg:${DEBIAN_VERSION}
+    commands:
+        - dch -l ~deb`lsb_release -r -s | cut -d'.' -f1`u   `git rev-parse HEAD | cut -c1-8`
+    when:
+      event: tag
+
+  pkg-suffix-testing:
+    image: dock.pw.fr/pw/debpkg:${DEBIAN_VERSION}
+    commands:
+        - dch -l ~build`date +"%y%m%d%H%M"`deb`lsb_release -r -s | cut -d'.' -f1`u   `git rev-parse HEAD | cut -c1-8`
+    when:
+      event: push
+
+  bundle:
+    image: dock.pw.fr/pw/debpkg:${DEBIAN_VERSION}
+    commands:
+      - apt-get install -y zip wget git-core libxslt1-dev libgd2-xpm-dev
+      - wget -O /tmp/openresty.tgz https://openresty.org/download/openresty-1.11.2.3.tar.gz
+      - tar -xzv --strip-component=1 -f /tmp/openresty.tgz
+      - dpkg-buildpackage -b
+      - fakeroot debian/rules clean
+
+  pkg-testing:
+    image: appleboy/drone-scp
+    host: pippin.planet-work.net
+    username: pkg
+    source: ../*.deb
+    target: incoming-testing/nginx-openresty/${DEBIAN_VERSION}
+    secrets: [ PLUGIN_KEY ]
+    when:
+      event: push
+
+  aptly-testing:
+    image: appleboy/drone-ssh
+    host: pippin.planet-work.net
+    user: pkg
+    script:
+      - aptly repo remove debian-${DEBIAN_VERSION}-testing `aptly repo search debian-${DEBIAN_VERSION}-testing 'Name (~ nginx-openresty.*)' | xargs` || true
+      - aptly repo add debian-${DEBIAN_VERSION}-testing incoming-testing/nginx-openresty/${DEBIAN_VERSION} && aptly publish update ${DEBIAN_VERSION}-testing debian 
+    secrets: [ PLUGIN_KEY ]
+    when:
+      event: push
+
+
+  pkg:
+    image: appleboy/drone-scp
+    host: pippin.planet-work.net
+    username: pkg
+    source: ../*.deb
+    target: incoming/nginx-openresty/${DEBIAN_VERSION}
+    secrets: [ PLUGIN_KEY ]
+    when:
+      event: tag
+
+  aptly:
+    image: appleboy/drone-ssh
+    host: pippin.planet-work.net
+    user: pkg
+    script:
+      - aptly repo add debian-${DEBIAN_VERSION} incoming/nginx-openresty/${DEBIAN_VERSION} && aptly publish update ${DEBIAN_VERSION} debian 
+    secrets: [ PLUGIN_KEY ]
+    when:
+      event: tag
+
+matrix:
+  DEBIAN_VERSION:
+    - wheezy
+    - jessie
+    - stretch
+
+
