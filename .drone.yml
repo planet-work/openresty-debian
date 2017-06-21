@@ -17,9 +17,9 @@ pipeline:
   bundle:
     image: dock.pw.fr/pw/debpkg:${DEBIAN_VERSION}
     commands:
-      - apt-get install -y zip wget git-core libxslt1-dev libgd2-xpm-dev
+      - apt-get install -y zip wget git-core libxslt1-dev libgd2-xpm-dev libgeoip-dev
       - wget -O /tmp/openresty.tgz https://openresty.org/download/openresty-1.11.2.3.tar.gz
-      - tar -xzv --strip-component=1 -f /tmp/openresty.tgz
+      - tar -xz --strip-component=1 -f /tmp/openresty.tgz
       - dpkg-buildpackage -b
       - fakeroot debian/rules clean
 
