@@ -1,4 +1,4 @@
-openresty (1.11.2.3) UNRELEASED; urgency=medium
+openresty (1.11.2.3) stable; urgency=medium
 
   * new upstream version
   * OpenSSL 1.0.2k
